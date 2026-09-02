@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="ZenithMax social video platform">
+  <link rel="manifest" href="/manifest.json">
+  <title>ZenithMax</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">ZENITH<span>MAX</span></div>
+  <input id="search" class="search" placeholder="Search videos, creators..." />
+  <div class="top-actions">
+    <button id="themeBtn">☾</button>
+    <button id="logoutBtn" class="hidden">Logout</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <button data-view="home" class="nav active">🏠 Home</button>
+    <button data-view="shorts" class="nav">▶ Shorts</button>
+    <button data-view="discover" class="nav">🔥 Discover</button>
+    <button data-view="following" class="nav">👥 Following</button>
+    <button data-view="messages" class="nav">💬 Messages</button>
+    <button data-view="notifications" class="nav">🔔 Notifications</button>
+    <button data-view="studio" class="nav">🎬 Creator Studio</button>
+    <button data-view="profile" class="nav">👤 Profile</button>
+    <button data-view="upload" class="nav">＋ Upload</button>
+  </aside>
+
+  <main id="app" class="content"></main>
+</div>
+
+<div id="auth" class="modal">
+  <div class="auth-card">
+    <div class="brand big">ZENITH<span>MAX</span></div>
+    <h1 id="authTitle">Welcome back</h1>
+    <p id="authSub">Sign in to continue.</p>
+    <input id="name" class="auth-extra hidden" placeholder="Display name">
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button id="authBtn" class="primary">Sign In</button>
+    <button id="switchAuth" class="link">Create an account</button>
+    <p id="authMsg" class="error"></p>
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
