@@ -1,15 +1,10 @@
 services:
   - type: web
-    name: zenithmax
+    name: zenithmax-v12
     runtime: node
+    plan: free
     buildCommand: npm install
     startCommand: npm start
     envVars:
       - key: JWT_SECRET
         generateValue: true
-      - key: DATA_DIR
-        value: /var/data
-    disk:
-      name: zenithmax-data
-      mountPath: /var/data
-      sizeGB: 10
