@@ -43,3 +43,13 @@ Do not copy or rehost third-party social-media videos without permission. Use cr
 
 ## V14 — Creator Business Edition
 V14 adds a creator-economy architecture: earnings dashboard, demo tips, demo subscriptions, ad campaign creation/activation, ad impression accounting, monetization eligibility, and an earnings ledger. **Demo mode only:** it does not process real money or collect card details. A production launch should integrate a compliant payment provider, database, tax/accounting workflows, fraud prevention, age/guardian requirements where applicable, and proper terms/privacy policies.
+
+
+## V16.1 Launch Ready
+- Non-empty starter feed with the bundled ZenithMax starter library.
+- Creator onboarding with Become a Creator.
+- Creator profiles, analytics and demo monetization retained.
+- Chat supports text plus image, video and audio/music attachments.
+- PWA install metadata and ZenithMax icon included.
+- Media uploads use the configured filesystem; production should move media to durable object storage/CDN.
+- Starter content is original demo content; do not upload or rehost copyrighted third-party videos without permission.
