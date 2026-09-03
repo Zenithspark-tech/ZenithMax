@@ -4,9 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#111827">
-  <meta name="description" content="ZenithMax social video platform">
+  <meta name="description" content="ZenithMax V16.1 launch-ready social video platform">
   <link rel="manifest" href="/manifest.json">
-  <title>ZenithMax</title>
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <title>ZenithMax V16.1</title>
   <link rel="stylesheet" href="/css/app.css">
 </head>
 <body>
@@ -15,6 +18,7 @@
   <input id="search" class="search" placeholder="Search videos, creators..." />
   <div class="top-actions">
     <button id="themeBtn">☾</button>
+    <button id="loginBtn">Sign in</button>
     <button id="logoutBtn" class="hidden">Logout</button>
   </div>
 </header>
@@ -27,7 +31,11 @@
     <button data-view="following" class="nav">👥 Following</button>
     <button data-view="messages" class="nav">💬 Messages</button>
     <button data-view="notifications" class="nav">🔔 Notifications</button>
+    <button data-view="history" class="nav">🕘 History</button>
+    <button data-view="saved" class="nav">★ Saved</button>
+    <button data-view="playlists" class="nav">📚 Playlists</button>
     <button data-view="studio" class="nav">🎬 Creator Studio</button>
+    <button data-view="earn" class="nav">💰 Earn</button>
     <button data-view="profile" class="nav">👤 Profile</button>
     <button data-view="upload" class="nav">＋ Upload</button>
   </aside>
@@ -35,8 +43,8 @@
   <main id="app" class="content"></main>
 </div>
 
-<div id="auth" class="modal">
-  <div class="auth-card">
+<div id="auth" class="modal hidden">
+  <div class="auth-card"><button id="closeAuth" class="modal-close" aria-label="Close">×</button>
     <div class="brand big">ZENITH<span>MAX</span></div>
     <h1 id="authTitle">Welcome back</h1>
     <p id="authSub">Sign in to continue.</p>
