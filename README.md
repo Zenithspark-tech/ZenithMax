@@ -1,55 +1,79 @@
-# ZenithMax V14 — Smart Social Video Platform
+# ZenithMax V17
 
-ZenithMax V14 upgrades V12 into a more complete social-video launch candidate while keeping the 156 original demo videos included in the project.
+ZenithMax V17 is the upgraded full-stack ZenithMax project built from the uploaded V13/V16-era codebase.
 
-## New in V14
+## What changed
 
-- Smarter recommendation ranking with watch-category affinity, follows, saves, engagement and freshness.
-- Recommendation reasons such as “Because you watch sports” and “From a creator you follow”.
-- Search suggestions and category discovery.
-- Full-screen Shorts with autoplay, swipe/touch navigation, desktop wheel navigation and sound controls.
-- Proper watch page with progress tracking, comments, up-next recommendations and creator links.
-- Real notification center for likes, follows, comments and messages.
-- Direct-message conversations and chat UI.
-- Playlists with add/remove video support and playlist playback collections.
-- Creator profile editing and creator messaging.
-- Creator Studio analytics: views, likes, followers, comments, top videos and category performance.
-- Video reporting and an admin moderation overview for the first real registered account.
-- Verified badges for starter creators.
-- 156 original starter/demo videos across many safe general-audience categories.
-- Responsive desktop/mobile layout and PWA manifest.
+- Persistent sign-in sessions with a short access token plus a long refresh token.
+- User profile photos with avatar upload and public creator avatars.
+- Automatic follower rank calculation: Beginners, Start, Entrance, Big, Bronze, Silver, Gold, Kings, Lords.
+- Resumeable video uploads in 2 MB chunks. Interrupted uploads keep their byte offset and can continue when the same file is selected again.
+- Starter demo videos now contain audio streams. The bundled clips are starter/demo media, while real external stock-video discovery is available through the Pexels API adapter.
+- Music page with artist profile, track upload, album metadata, cover art, and international song discovery through the iTunes Search API. External commercial tracks are not copied into the server.
+- Chat with text/image/video/audio attachments.
+- WebRTC voice/video call UI with WebSocket signaling, including multi-peer rooms up to the configured client limit. A production deployment should add a TURN server.
+- Zenith AI page with a server-side OpenAI-compatible provider connector. No API key is shipped in the repo.
+- Browser download center that remembers downloaded items. A browser cannot silently choose an arbitrary OS file-system path; the browser/phone controls the real Downloads folder.
+- Public developer page with privacy-safe developer information.
+- Security hardening via Helmet and compression.
+- Render production config with a persistent disk for durable local uploads/data.
+- `/api/health` health check and Render Blueprint config.
 
-## Run locally
+## Important production architecture note
 
-1. Install Node.js 18 or newer.
-2. Open a terminal in this project folder.
-3. Run `npm install`.
-4. Set a strong `JWT_SECRET` environment variable for any public deployment.
-5. Run `npm start`.
-6. Open `http://localhost:3000`.
+The current V17 package uses local storage under `DATA_DIR`. For reliable production uploads on Render, the included `render.yaml` uses a paid Render web service with a persistent disk mounted at `/var/data`. Free Render web services use an ephemeral filesystem, so uploaded files and local JSON data can disappear after restarts/redeploys/spin-downs.
+
+For a large-scale ZenithMax, the next architecture step is PostgreSQL + object storage/CDN + a background media-processing service. The current upload API is deliberately chunked so it can later be moved behind object storage without changing the creator UI.
+
+## Environment variables
+
+Required in production:
+
+- `JWT_SECRET`
+- `REFRESH_SECRET`
+- `DATA_DIR=/var/data`
+
+Optional:
+
+- `PEXELS_API_KEY` for live real stock video discovery.
+- `AI_API_URL`, `AI_API_KEY`, `AI_MODEL` for live Zenith AI responses.
+- `UPLOAD_CHUNK_SIZE` to change the default chunk size.
+
+Never put AI/provider secrets in browser code or commit them to GitHub.
+
+## Local run
+
+```bash
+npm install
+npm start
+```
+
+Open `http://localhost:3000`.
 
 ## Render deployment
 
-The project listens on `0.0.0.0` and uses `process.env.PORT`, so it is hosting-friendly. Use `npm install` as the build command and `npm start` as the start command.
+1. Push this project folder to a GitHub repository.
+2. In Render, create **New → Blueprint** or **New → Web Service** and connect the repository.
+3. Use the included `render.yaml`, which starts `npm start`, uses `/api/health`, and mounts the persistent disk at `/var/data`.
+4. Confirm the generated `JWT_SECRET` and `REFRESH_SECRET` values exist.
+5. Add `PEXELS_API_KEY` if you want the Discover page to show real stock videos.
+6. Add the AI provider variables when you are ready for live model-backed Zenith AI.
+7. Deploy and open the generated `onrender.com` URL.
 
-The starter demo videos are source assets and are included with the app. Runtime user uploads are stored in `DATA_DIR/uploads`. On hosts with ephemeral filesystems, runtime uploads can disappear after redeploys or restarts. For a real public platform, move uploads to object storage/CDN and move the JSON database to PostgreSQL.
+## Music rights
 
-## Production roadmap
+Do not copy commercial songs from YouTube Music, Spotify, Audiomack, or other services into ZenithMax without the rights to distribute them. V17 uses external catalog discovery and short promotional previews where the provider permits them, and gives creators a path to upload music they own or have permission to publish.
 
-For a much larger real-world service, add PostgreSQL, object storage/CDN, video transcoding and thumbnail jobs, email verification/password resets, stronger rate limiting, abuse detection, content moderation workflows, realtime WebSockets, push notifications, backups, audit logs and a dedicated live-video service.
+## Android Studio / Google Play next
 
-Do not copy or rehost third-party social-media videos without permission. Use creator uploads, licensed content, or official authorized platform integrations.
+The recommended Android packaging approach is a native Android Studio shell around the HTTPS ZenithMax web app, with file chooser support, downloads, microphone/camera permissions, and WebView deep-link handling. The Play submission must target the API level currently required by Google Play at submission time; as of August 31, 2026, new apps and updates are required to target Android 16 / API 36 or higher.
 
+## Validation
 
-## V14 — Creator Business Edition
-V14 adds a creator-economy architecture: earnings dashboard, demo tips, demo subscriptions, ad campaign creation/activation, ad impression accounting, monetization eligibility, and an earnings ledger. **Demo mode only:** it does not process real money or collect card details. A production launch should integrate a compliant payment provider, database, tax/accounting workflows, fraud prevention, age/guardian requirements where applicable, and proper terms/privacy policies.
+Run:
 
+```bash
+./scripts/extreme-scan.sh
+```
 
-## V16.1 Launch Ready
-- Non-empty starter feed with the bundled ZenithMax starter library.
-- Creator onboarding with Become a Creator.
-- Creator profiles, analytics and demo monetization retained.
-- Chat supports text plus image, video and audio/music attachments.
-- PWA install metadata and ZenithMax icon included.
-- Media uploads use the configured filesystem; production should move media to durable object storage/CDN.
-- Starter content is original demo content; do not upload or rehost copyrighted third-party videos without permission.
+The V17 validator runs 34 in-process JavaScript parse passes, then validates the main JSON/config files and shell script syntax. The bundle also includes 156 starter MP4s, and the final media audit confirmed an audio stream in all 156.

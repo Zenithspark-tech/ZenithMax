@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: zenithmax-v17-demo
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: REFRESH_SECRET
+        generateValue: true
+      - key: DATA_DIR
+        value: /tmp/zenithmax-data
