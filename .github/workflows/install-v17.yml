@@ -1,0 +1,39 @@
+name: Install ZenithMax V17
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "ZenithMax_V17_Render_Ready.zip"
+
+permissions:
+  contents: write
+
+jobs:
+  install-v17:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract V17
+        run: |
+          rm -rf /tmp/zenithmax-v17
+          mkdir -p /tmp/zenithmax-v17
+          unzip -q ZenithMax_V17_Render_Ready.zip -d /tmp/zenithmax-v17
+
+          ROOT="$(find /tmp/zenithmax-v17 -maxdepth 1 -mindepth 1 -type d | head -n 1)"
+
+          cp -a "$ROOT/." .
+
+          rm -f ZenithMax_V17_Render_Ready.zip
+
+      - name: Commit V17
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          git commit -m "Install ZenithMax V17" || echo "No changes to commit"
+          git push
